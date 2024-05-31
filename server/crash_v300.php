@@ -80,7 +80,6 @@ function xml_for_result($result) {
 
 function doPost($url, $postdata) {
   $url = parse_url($url);
-
   if (!isset($url['port'])) {
     if ($url['scheme'] == 'http') { $url['port']=80; }
     elseif ($url['scheme'] == 'https') { $url['port']=443; }
@@ -244,31 +243,31 @@ while ($reader->read()) {
     $crashes[$crashIndex]["appname"] = "";
   
   } else if ($reader->name == "bundleidentifier" && $reader->nodeType == XMLReader::ELEMENT) {
-    $crashes[$crashIndex]["bundleidentifier"] = mysqli_real_escape_string(reading($reader, "bundleidentifier"));
+    $crashes[$crashIndex]["bundleidentifier"] = mysqli_real_escape_string($link,reading($reader, "bundleidentifier"));
   } else if ($reader->name == "version" && $reader->nodeType == XMLReader::ELEMENT) {
-    $crashes[$crashIndex]["version"] = mysqli_real_escape_string(reading($reader, "version"));
+    $crashes[$crashIndex]["version"] = mysqli_real_escape_string($link,reading($reader, "version"));
     if( !ValidateString( $crashes[$crashIndex]["version"], array('format'=>VALIDATE_NUM . VALIDATE_ALPHA. VALIDATE_SPACE . VALIDATE_PUNCTUATION) ) )
       die(xml_for_result(FAILURE_XML_VERSION_NOT_ALLOWED));
   } else if ($reader->name == "senderversion" && $reader->nodeType == XMLReader::ELEMENT) {
-    $crashes[$crashIndex]["senderversion"] = mysqli_real_escape_string(reading($reader, "senderversion"));
+    $crashes[$crashIndex]["senderversion"] = mysqli_real_escape_string($link,reading($reader, "senderversion"));
     if (!ValidateString( $crashes[$crashIndex]["senderversion"], array('format'=>VALIDATE_NUM . VALIDATE_ALPHA. VALIDATE_SPACE . VALIDATE_PUNCTUATION) ) )
       die(xml_for_result(FAILURE_XML_SENDER_VERSION_NOT_ALLOWED));
   } else if ($reader->name == "applicationname" && $reader->nodeType == XMLReader::ELEMENT) {
-    $crashes[$crashIndex]["applicationname"] = mysqli_real_escape_string(reading($reader, "applicationname"));
+    $crashes[$crashIndex]["applicationname"] = mysqli_real_escape_string($link,reading($reader, "applicationname"));
   } else if ($reader->name == "systemversion" && $reader->nodeType == XMLReader::ELEMENT) {
-    $crashes[$crashIndex]["systemversion"] = mysqli_real_escape_string(reading($reader, "systemversion"));
+    $crashes[$crashIndex]["systemversion"] = mysqli_real_escape_string($link,reading($reader, "systemversion"));
   } else if ($reader->name == "userid" && $reader->nodeType == XMLReader::ELEMENT) {
-    $crashes[$crashIndex]["userid"] = mysqli_real_escape_string(reading($reader, "userid"));
+    $crashes[$crashIndex]["userid"] = mysqli_real_escape_string($link,reading($reader, "userid"));
   } else if ($reader->name == "username" && $reader->nodeType == XMLReader::ELEMENT) {
-    $crashes[$crashIndex]["username"] = mysqli_real_escape_string(reading($reader, "username"));
+    $crashes[$crashIndex]["username"] = mysqli_real_escape_string($link,reading($reader, "username"));
   } else if ($reader->name == "contact" && $reader->nodeType == XMLReader::ELEMENT) {
-    $crashes[$crashIndex]["contact"] = mysqli_real_escape_string(reading($reader, "contact"));
+    $crashes[$crashIndex]["contact"] = mysqli_real_escape_string($link,reading($reader, "contact"));
   } else if ($reader->name == "description" && $reader->nodeType == XMLReader::ELEMENT) {
-    $crashes[$crashIndex]["description"] = mysqli_real_escape_string(reading($reader, "description"));
+    $crashes[$crashIndex]["description"] = mysqli_real_escape_string($link,reading($reader, "description"));
   } else if ($reader->name == "log" && $reader->nodeType == XMLReader::ELEMENT) {
     $crashes[$crashIndex]["logdata"] = reading($reader, "log");
   } else if ($reader->name == "platform" && $reader->nodeType == XMLReader::ELEMENT) {
-    $crashes[$crashIndex]["platform"] = mysqli_real_escape_string(reading($reader, "platform"));
+    $crashes[$crashIndex]["platform"] = mysqli_real_escape_string($link,reading($reader, "platform"));
   }
 }
 
@@ -277,8 +276,6 @@ $reader->close();
 $lastError = 0;
 
 // store the best version status to return feedback
-$best_status = VERSION_STATUS_UNKNOWN;
-
 // go through all crah reports
 foreach ($crashes as $crash) {
 
@@ -307,8 +304,6 @@ foreach ($crashes as $crash) {
   // check out if we accept this app and version of the app
   $acceptlog = false;
   $symbolicate = false;
-
-  $hockeyappidentifier = '';
 
   // shall we accept any crash log or only ones that are named in the database
   if ($acceptallapps) {
@@ -397,7 +392,6 @@ foreach ($crashes as $crash) {
     	    
       // we assume all crashes in this xml goes to the same app, since it is coming from one client. so push them all at once to HockeyApp
       $result = doPost($hockeyAppURL."api/2/apps/".$hockeyappidentifier."/crashes", utf8_encode($xmlstring));
-        
       // we do not parse the result, values are different anyway, so simply return unknown status            
       echo xml_for_result(VERSION_STATUS_UNKNOWN);
 
@@ -446,7 +440,9 @@ foreach ($crashes as $crash) {
   	continue;
   }
 }
-
+//$logMessage = ‘这是一条日志信息11’;
+//$logFile = log.txt;
+//error_log("---{$reader->nodeType}-{$crashes[$crashIndex]["bundleidentifier"]}--", 3, $logFile);
 /* schliessen der Verbinung */
 mysqli_close($link);
 

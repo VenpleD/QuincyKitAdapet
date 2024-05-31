@@ -42,7 +42,7 @@
   </component>
   <component name="PhpUnit">
     <phpunit_settings>
-      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/phpMyAdmin4.8.5/vendor/autoload.php" />
+      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/phpMyAdmin4.8.5/vendor/autoload.php" phpunit_phar_path="" />
     </phpunit_settings>
   </component>
   <component name="PsalmOptionsConfiguration">

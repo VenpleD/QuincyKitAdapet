@@ -7,6 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/phpMyAdmin4.8.5/test/classes" isTestSource="true" packagePrefix="PhpMyAdmin\Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/phpMyAdmin4.8.5/test/selenium" isTestSource="true" packagePrefix="PhpMyAdmin\Tests\Selenium\" />
       <sourceFolder url="file://$MODULE_DIR$/phpMyAdmin4.8.5/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/admin/phpMyAdmin4.8.5/libraries/classes" isTestSource="false" packagePrefix="PhpMyAdmin" />
       <excludeFolder url="file://$MODULE_DIR$/phpMyAdmin4.8.5/vendor/bacon/bacon-qr-code" />
       <excludeFolder url="file://$MODULE_DIR$/phpMyAdmin4.8.5/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/phpMyAdmin4.8.5/vendor/google/recaptcha" />

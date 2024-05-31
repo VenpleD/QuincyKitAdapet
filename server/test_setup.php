@@ -35,6 +35,8 @@
 
 require_once('config.php');
 
+phpinfo();
+
 echo "XMLReader: ";
 if (!class_exists('XMLReader', false)) echo "FAILED"; else echo "passed";
 echo "<br>";
